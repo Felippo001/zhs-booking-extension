@@ -1,0 +1,29 @@
+{
+    "manifest_version": 3,
+    "name": "ZHS Booking Extension",
+    "version": "0.0.1",
+    "description": "Content script using zhs-client-js.",
+    "permissions": [
+      "scripting",
+      "activeTab",
+      "cookies",
+      "tabs",
+      "http://*/*",
+      "https://*/*"
+    ],
+    "content_scripts": [
+      {
+        "matches": [
+          "https://kurse.zhs-muenchen.de/de/product-offers/*"
+        ],
+        "js": [
+          "dist/content.bundle.js"
+        ],
+        "run_at": "document_idle"
+      }
+    ]
+    
+    
+      
+  }
+  
