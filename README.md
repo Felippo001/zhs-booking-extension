@@ -33,13 +33,13 @@ Zwei Möglichkeiten:
 ### **2. Selbst builden**
 
 1. Dependencies installieren
-   '''
+   ```bash
    npm install
-   '''
+   ```
 2. Build erzeugen
-   '''
+   ```bash
    npm run build
-   '''
+   ```
 3. In Chrome laden:
    **chrome://extensions** → „Entpackte Erweiterung laden“
 4. Den Ordner **`zhs-booking-extension`** auswählen
@@ -50,9 +50,9 @@ Zwei Möglichkeiten:
 
 Für Live-Entwicklung mit automatischem Re-Bundling:
 
-'''
+```bash
 npm run dev
-'''
+```
 
 Dann die Extension in Chrome manuell neu laden/aktualisieren.
 
