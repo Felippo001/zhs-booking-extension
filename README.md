@@ -4,7 +4,11 @@
 </p>
 
 
-# <center>ZHS Booking Extension</center>
+<div align="center">
+
+# ZHS Booking Extension
+
+</div>
 
 Eine Chrome-Extension zur vereinfachten Buchung von **slotbasierten ZHS-Kursen**.
 Sie basiert auf der Library [zhs-client-js](https://www.npmjs.com/package/zhs-client-js) und zeigt automatisch Kursdetails, Slot-Verfügbarkeiten und Buchungsoptionen direkt auf den ZHS-Angebotsseiten an.
