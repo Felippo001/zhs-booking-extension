@@ -105,102 +105,102 @@ function renderNextWeekButton(onClick) {
 
 function renderCourseCard({ course, nextCourse, res, slotAvailable, onClick }) {
   
-    const container = document.createElement("div");
-    container.className = "myExt-course-card";
-  
-    // HEADER
-    const header = document.createElement("div");
-    header.className = "myExt-course-header";
-  
-    const titleWrapper = document.createElement("div");
-  
-    const title = document.createElement("div");
-    title.className = "myExt-course-title";
-    title.textContent = course;
-  
-    const sub = document.createElement("div");
-    sub.className = "myExt-course-sub";
-    const date = new Date(nextCourse)
-    sub.textContent = nextCourse ? `${date.toLocaleDateString()} ${date.toLocaleTimeString()}` : "–";
-  
-    titleWrapper.appendChild(title);
-    titleWrapper.appendChild(sub);
-  
-    const slotsBadge = document.createElement("div");
-    const slots = slotAvailable ? res.data.booking_slots[0].availability : 0;
-    slotsBadge.className = "myExt-course-slots";
-  
-    if (!slotAvailable || slots === 0) {
-      slotsBadge.classList.add("myExt-course-slots--none");
-      slotsBadge.textContent = "Keine Slots verfügbar";
-      
-    } else if (slots <= 3) {
-      slotsBadge.classList.add("myExt-course-slots--low");
-      slotsBadge.textContent = `${slots} Slots – fast voll`;
-    } else {
-      slotsBadge.textContent = `${slots} Slots verfügbar`;
-    }
+  const container = document.createElement("div");
+  container.className = "myExt-course-card";
 
-    
-  
-    header.appendChild(titleWrapper);
-    header.appendChild(slotsBadge);
-  
-    // FOOTER
-    const footer = document.createElement("div");
-    footer.className = "myExt-course-footer";
-  
-    if (slotAvailable && slots > 0) {
-      const btn = document.createElement("button");
-      btn.className = "myExt-course-button";
-      btn.innerHTML = `<span class="myExt-course-button-icon">🛒</span><span>In Warenkorb legen</span>`;
-  
-      // attach your click handler here
-      btn.addEventListener("click", () => {
-        // TODO: add booking logic
-        console.log("In Warenkorb legen", course);
-        if(slotAvailable && onClick) onClick()
-      });
-  
-      footer.appendChild(btn);
+  // HEADER
+  const header = document.createElement("div");
+  header.className = "myExt-course-header";
+
+  const titleWrapper = document.createElement("div");
+
+  const title = document.createElement("div");
+  title.className = "myExt-course-title";
+  title.textContent = course;
+
+  const sub = document.createElement("div");
+  sub.className = "myExt-course-sub";
+  const date = new Date(nextCourse);
+  sub.textContent = nextCourse ? `${date.toLocaleDateString()} ${date.toLocaleTimeString()}` : "–";
+
+  titleWrapper.appendChild(title);
+  titleWrapper.appendChild(sub);
+
+  const slotsBadge = document.createElement("div");
+  const slots = slotAvailable ? res.data.booking_slots[0].availability : 0;
+  slotsBadge.className = "myExt-course-slots";
+
+  if (!slotAvailable || slots === 0) {
+    slotsBadge.classList.add("myExt-course-slots--none");
+    slotsBadge.textContent = "Keine Slots verfügbar";
+  } else if (slots <= 3) {
+    slotsBadge.classList.add("myExt-course-slots--low");
+    slotsBadge.textContent = `${slots} Slots – fast voll`;
+  } else {
+    slotsBadge.textContent = `${slots} Slots verfügbar`;
+  }
+
+  header.appendChild(titleWrapper);
+  header.appendChild(slotsBadge);
+
+  // FOOTER
+  const footer = document.createElement("div");
+  footer.className = "myExt-course-footer";
+
+  // NEW: check already_booked / already_in_cart
+  const slotInfo = slotAvailable ? res.data.booking_slots[0] : null;
+  const alreadyBooked = slotInfo && slotInfo.already_booked;
+  const alreadyInCart = slotInfo && slotInfo.already_in_cart;
+
+  if (slotAvailable && slots > 0 && !alreadyBooked && !alreadyInCart) {
+    // only show button if NOT already booked or in cart
+    const btn = document.createElement("button");
+    btn.className = "myExt-course-button";
+    btn.innerHTML = `<span class="myExt-course-button-icon">🛒</span><span>In Warenkorb legen</span>`;
+
+    btn.addEventListener("click", () => {
+      console.log("In Warenkorb legen", course);
+      if (slotAvailable && onClick) onClick();
+    });
+
+    footer.appendChild(btn);
+  } else {
+    const notAvail = document.createElement("div");
+    notAvail.className = "myExt-course-not-available";
+
+    if (alreadyBooked) {
+      notAvail.textContent = "Bereits gebucht";
+    } else if (alreadyInCart) {
+      notAvail.textContent = "Bereits im Warenkorb";
     } else {
-      const notAvail = document.createElement("div");
-      
-      notAvail.className = "myExt-course-not-available";
       notAvail.textContent = "Nicht buchbar";
-
-      if(res.data.booking_slots[0].already_booked) {
-        notAvail.textContent = "Bereits gebucht"
-      } else if(res.data.booking_slots[0].already_in_cart){
-        notAvail.textContent = "Bereits im Warenkorb"
-      }
-
-      footer.appendChild(notAvail);
     }
-  
-    container.appendChild(header);
-    container.appendChild(footer);
-  
-    // Append somewhere sensible – adjust as needed
-    // document.body.appendChild(container);
-    appendUnderProductInfo(container)
+
+    footer.appendChild(notAvail);
   }
 
-  function appendUnderProductInfo(el) {
-    // Find the target block
-    const target =
-      document.querySelector('[data-testid="product-offer-info"].flex.flex-col.gap-y-4') ||
-      document.querySelector('[data-testid="product-offer-info"]');
-  
-    // If found → insert after
-    if (target && target.parentNode) {
-      if (target.nextSibling) {
-        target.parentNode.insertBefore(el, target.nextSibling);
-      } else {
-        target.parentNode.appendChild(el);
-      }
+  container.appendChild(header);
+  container.appendChild(footer);
+
+  appendUnderProductInfo(container);
+}
+
+
+function appendUnderProductInfo(el) {
+  // Find the target block
+  const target =
+    document.querySelector('[data-testid="product-offer-info"].flex.flex-col.gap-y-4') ||
+    document.querySelector('[data-testid="product-offer-info"]');
+
+  // If found → insert after
+  if (target && target.parentNode) {
+    if (target.nextSibling) {
+      target.parentNode.insertBefore(el, target.nextSibling);
     } else {
-      // Fallback → top of body
-      document.body.prepend(el);
+      target.parentNode.appendChild(el);
     }
+  } else {
+    // Fallback → top of body
+    document.body.prepend(el);
   }
+}
