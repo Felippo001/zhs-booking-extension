@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "ZHS Booking Extension",
-    "version": "0.0.1",
-    "description": "Content script using zhs-client-js.",
+    "version": "1.0.0",
+    "description": "Vereinfacht die Buchung von slotbasierten ZHS-Kursen, zeigt automatisch Kursdetails und Live-Verfügbarkeiten an und ermöglicht direkte Buchungen auf den Angebotsseiten.",
     "permissions": [
       "scripting",
       "activeTab",
@@ -19,7 +19,13 @@
         ],
         "run_at": "document_idle"
       }
-    ]
+    ],
+    "icons": {
+      "16": "assets/logo16.png",
+      "32": "assets/logo32.png",
+      "48": "assets/logo48.png",
+      "128": "assets/logo128.png"
+    }
     
     
       
